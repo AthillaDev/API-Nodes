@@ -26,5 +26,7 @@ model User {
   email String  @unique
   name  String
   age Int
+  // Opcional no banco: usuários cadastrados antes deste campo não têm gênero
+  genero String?
   
 }

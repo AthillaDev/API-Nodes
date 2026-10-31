@@ -12,18 +12,18 @@ export async function buscarUsuario(id) {
   })
 }
 
-export async function criarUsuario({ name, age, email }) {
+export async function criarUsuario({ name, age, email, genero }) {
   return prisma.user.create({
-    data: { name, age, email }
+    data: { name, age, email, genero }
   })
 }
 
 // Campos que chegarem como undefined não são alterados pelo Prisma.
 // Por isso o mesmo método serve para PUT (todos os campos) e PATCH (só alguns).
-export async function atualizarUsuario(id, { name, age, email }) {
+export async function atualizarUsuario(id, { name, age, email, genero }) {
   return prisma.user.update({
     where: { id },
-    data: { name, age, email }
+    data: { name, age, email, genero }
   })
 }
 
