@@ -9,6 +9,12 @@ API REST de cadastro de usuários, feita com **Node.js**, **Express 5**, **Prism
 - [Prisma ORM](https://www.prisma.io/) para acessar o banco
 - [MongoDB Atlas](https://www.mongodb.com/atlas) como banco de dados
 - [CORS](https://www.npmjs.com/package/cors) para liberar o acesso do front-end
+- [npm](https://www.npmjs.com/) para gerenciar as dependências
+
+### Infraestrutura
+
+- [GitHub](https://github.com/) para o código-fonte
+- [Render](https://render.com/) para hospedar a API (plano gratuito)
 
 ## Pré-requisitos
 
