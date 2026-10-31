@@ -15,6 +15,11 @@ API REST de cadastro de usuários, feita com **Node.js**, **Express 5**, **Prism
 
 - [GitHub](https://github.com/) para o código-fonte
 - [Render](https://render.com/) para hospedar a API (plano gratuito)
+- [Vercel](https://vercel.com/) para hospedar o front-end
+
+## Front-end
+
+A interface que consome esta API está publicada em **https://cadastro-de-usuarios-fawn.vercel.app**. Ela cadastra, lista, edita e exclui usuários, e chama a API publicada no Render. O código do front fica em um repositório separado.
 
 ## Pré-requisitos
 
