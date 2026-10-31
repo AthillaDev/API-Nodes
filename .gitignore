@@ -4,5 +4,6 @@ node_modules
 
 /generated/prisma
 
-# Anotações de estudo locais
+# Anotações de estudo e contexto locais
 anotacoes-estudo.md
+contexto-projeto.md
