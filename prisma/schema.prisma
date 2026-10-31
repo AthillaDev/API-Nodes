@@ -1,0 +1,30 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// O prisma e uma biblioteca que nos ajuda a fazer conexão com o MongoDB. Nossa conexão com a  aplicação conexão com o prisma
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+// Prisma Studio is up on http://localhost:5555 --> esta rodando nessa porta, a porta tem que ser única. O prisma e so o intermediário os dados esta sendo guardado no mongoDB.
+// npx prisma studio --> para visualizar a nossa tabela no navegador.
+// O ? e usando para referencia que não e obrigatório colocar o nome. ( SCHEMA )
+// prisma db push--> para iniciar o prisma.
+ 
+model User { 
+  id    String  @id @default(auto()) @map("_id") @db.ObjectId
+  email String  @unique
+  name  String
+  age Int
+  
+}
