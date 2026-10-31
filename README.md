@@ -19,7 +19,9 @@ API REST de cadastro de usuários, feita com **Node.js**, **Express 5**, **Prism
 
 ## Front-end
 
-A interface que consome esta API está publicada em **https://cadastro-de-usuarios-fawn.vercel.app**. Ela cadastra, lista, edita e exclui usuários, e chama a API publicada no Render. O código do front fica em um repositório separado.
+A interface que consome esta API está publicada em **https://cadastro-de-usuarios-fawn.vercel.app**. Ela cadastra, lista, edita e exclui usuários, e chama a API publicada no Render.
+
+- **Repositório do front-end**: https://github.com/AthillaDev/Cadastro-de-Usuarios
 
 ## Pré-requisitos
 
