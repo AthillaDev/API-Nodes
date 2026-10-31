@@ -4,7 +4,8 @@
   "description": "Para cria um arquivo json(comando: npm init -y) e para instalar o express(comando: npm install express) E a ficha do nosso projeto",
   "main": "server.js",
   "scripts": {
-    "dev": "node --watch server.js"
+    "dev": "node --watch server.js",
+    "start": "node server.js"
   },
   "keywords": [],
   "author": "Athilla Cruz",
