@@ -53,9 +53,23 @@ API REST de cadastro de usuários, feita com **Node.js**, **Express 5**, **Prism
 
    O servidor fica disponível em `http://localhost:3000`. O comando `node --watch` reinicia o servidor sozinho quando um arquivo muda.
 
+## Deploy
+
+A API está publicada no [Render](https://render.com/), como Web Service a partir da branch `main`:
+
+- **URL pública**: `https://api-nodes-bt6u.onrender.com`
+- **Build Command**: `npm install && npx prisma generate`
+- **Start Command**: `npm start`
+- **Variável de ambiente**: `DATABASE_URL` (configurada no painel do Render, nunca no código)
+
+A porta vem da variável `PORT`, que o Render define sozinho. Localmente, a API usa 3000.
+
+O plano gratuito coloca o serviço em repouso depois de 15 minutos sem acesso. A primeira requisição depois disso pode demorar até um minuto.
+
 ## Rotas
 
-Base: `http://localhost:3000/usuarios`
+Base local: `http://localhost:3000/usuarios`
+Base publicada: `https://api-nodes-bt6u.onrender.com/usuarios`
 
 | Método | Rota | Descrição | Respostas |
 |---|---|---|---|
@@ -74,7 +88,8 @@ Para POST e PUT, todos os campos são obrigatórios. Para PATCH, envie pelo meno
 {
   "name": "Athilla Cruz",
   "age": 20,
-  "email": "athilla@exemplo.com"
+  "email": "athilla@exemplo.com",
+  "genero": "feminino"
 }
 ```
 
@@ -83,6 +98,7 @@ Regras de validação:
 - `name`: texto, não vazio
 - `age`: número inteiro entre 0 e 150
 - `email`: formato `algo@algo.algo`, único no banco
+- `genero`: `masculino` ou `feminino`. Usuários cadastrados antes desse campo existir podem não tê-lo.
 
 ### Exemplos
 
@@ -90,7 +106,7 @@ Regras de validação:
 # Criar
 curl -X POST http://localhost:3000/usuarios \
   -H "Content-Type: application/json" \
-  -d '{"name":"Athilla Cruz","age":20,"email":"athilla@exemplo.com"}'
+  -d '{"name":"Athilla Cruz","age":20,"email":"athilla@exemplo.com","genero":"feminino"}'
 
 # Alterar só a idade
 curl -X PATCH http://localhost:3000/usuarios/<id> \
@@ -133,6 +149,7 @@ Fluxo de uma requisição: **rota → validação → controller → service →
 | Comando | O que faz |
 |---|---|
 | `npm run dev` | Sobe o servidor com reinício automático |
+| `npm start` | Sobe o servidor sem reinício automático (usado no deploy) |
 | `npx prisma studio` | Abre uma interface visual do banco em `http://localhost:5555` |
 
 ## Autor
