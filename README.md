@@ -1,4 +1,4 @@
-# Aulas Node.js: API de Usuários
+# User Management RESTful API | Node.js, Express & Prisma
 
 API REST de cadastro de usuários, feita com **Node.js**, **Express 5**, **Prisma** e **MongoDB**. O projeto nasceu das aulas da DevClub e foi evoluindo para uma estrutura em camadas.
 
