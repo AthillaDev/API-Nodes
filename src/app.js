@@ -8,6 +8,11 @@ const app = express()
 app.use(express.json())
 app.use(cors())
 
+// Rota de boas-vindas: sem ela, abrir a raiz do site mostra "Cannot GET /"
+app.get("/", (req, res) => {
+  res.json({ message: "API de usuários no ar. Acesse /usuarios" })
+})
+
 app.use("/usuarios", usuariosRoutes)
 
 // Precisa ficar depois das rotas: é aqui que os erros caem
