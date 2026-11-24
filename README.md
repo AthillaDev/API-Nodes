@@ -1,6 +1,55 @@
 # User Management RESTful API | Node.js, Express & Prisma
 
-API REST de cadastro de usuários, feita com **Node.js**, **Express 5**, **Prisma** e **MongoDB**. O projeto nasceu dos estudos de NODES e foi evoluindo para uma estrutura em camadas.
+API REST para cadastro, consulta, edição e exclusão de usuários, com validação de dados, persistência no MongoDB e deploy em produção. Foi desenvolvida como projeto prático do curso da DevClub e consumida por um front-end em React.
+
+## Links rápidos
+
+- **API publicada (Render):** https://api-nodes-bt6u.onrender.com/usuarios
+- **Front-end publicado (Vercel):** https://cadastro-de-usuarios-fawn.vercel.app
+- **Repositório do front-end:** https://github.com/AthillaDev/Cadastro-de-Usuarios
+
+> A API roda no plano gratuito do Render. Se ela estiver em repouso, a primeira requisição pode levar até um minuto.
+
+## Funcionalidades
+
+- CRUD completo de usuários: criar, listar, buscar por id, substituir (PUT), alterar parcialmente (PATCH) e excluir.
+- Validação de todos os dados de entrada, com a lista de erros retornada ao cliente.
+- Tratamento de erros centralizado, com códigos HTTP adequados (400, 404, 409 e 500).
+- Email único no banco, com bloqueio de cadastros repetidos.
+- CORS configurado para o front-end publicado.
+
+## Arquitetura
+
+```
+Front-end (React, Vercel)
+        │  HTTP (JSON)
+        ▼
+API (Node.js + Express, Render)
+  rota → validação → controller → service
+        │
+        ▼
+Prisma ORM
+        │
+        ▼
+MongoDB Atlas
+```
+
+Cada camada tem uma responsabilidade:
+
+- **Rotas** definem os caminhos e os métodos HTTP.
+- **Validação** confere o corpo da requisição antes de qualquer acesso ao banco.
+- **Controllers** recebem a requisição e devolvem a resposta.
+- **Services** são os únicos que falam com o Prisma.
+- **Middleware de erros** converte os erros do Prisma e da aplicação em respostas HTTP.
+
+## Decisões técnicas
+
+- **Camadas separadas:** facilita trocar o banco ou a forma de validação sem mexer no resto do código.
+- **Erros centralizados:** os controllers não têm `try/catch`. Os erros chegam a um único middleware, o que mantém o código mais limpo.
+- **PUT com validação completa e PATCH com validação parcial:** o PUT exige todos os campos, enquanto o PATCH aceita só os campos enviados.
+- **Campo `genero` opcional no banco:** usuários cadastrados antes desse campo existir continuam válidos, mas o cadastro novo exige o campo.
+- **Porta vinda do ambiente (`PORT`):** o Render define a porta automaticamente, e localmente a API usa 3000.
+- **Segredos fora do código:** a string de conexão fica no `.env` (local) e nas variáveis de ambiente do Render.
 
 ## Tecnologias
 
@@ -17,24 +66,18 @@ API REST de cadastro de usuários, feita com **Node.js**, **Express 5**, **Prism
 - [Render](https://render.com/) para hospedar a API (plano gratuito)
 - [Vercel](https://vercel.com/) para hospedar o front-end
 
-## Front-end
-
-A interface que consome esta API está publicada em **https://cadastro-de-usuarios-fawn.vercel.app**. Ela cadastra, lista, edita e exclui usuários, e chama a API publicada no Render.
-
-- **Repositório do front-end**: https://github.com/AthillaDev/Cadastro-de-Usuarios
-
 ## Pré-requisitos
 
 - Node.js 18 ou superior
 - Uma conta no MongoDB Atlas, com um cluster e um usuário de banco criados
 
-## Como rodar
+## Como rodar localmente
 
 1. Clone o repositório e entre na pasta:
 
    ```bash
-   git clone <url-do-repositorio>
-   cd Aulas-Node.js
+   git clone https://github.com/AthillaDev/API-Nodes.git
+   cd API-Nodes
    ```
 
 2. Instale as dependências:
@@ -68,24 +111,22 @@ A interface que consome esta API está publicada em **https://cadastro-de-usuari
 
 ## Deploy
 
-A API está publicada no [Render](https://render.com/), como Web Service a partir da branch `main`:
+A API está publicada no Render como Web Service a partir da branch `main`:
 
-- **URL pública**: `https://api-nodes-bt6u.onrender.com`
-- **Build Command**: `npm install && npx prisma generate`
-- **Start Command**: `npm start`
-- **Variável de ambiente**: `DATABASE_URL` (configurada no painel do Render, nunca no código)
+- **Build Command:** `npm install && npx prisma generate`
+- **Start Command:** `npm start`
+- **Variável de ambiente:** `DATABASE_URL` (configurada no painel do Render, nunca no código)
 
-A porta vem da variável `PORT`, que o Render define sozinho. Localmente, a API usa 3000.
-
-O plano gratuito coloca o serviço em repouso depois de 15 minutos sem acesso. A primeira requisição depois disso pode demorar até um minuto.
+Cada push para a `main` gera um novo deploy automaticamente.
 
 ## Rotas
 
-Base local: `http://localhost:3000/usuarios`
-Base publicada: `https://api-nodes-bt6u.onrender.com/usuarios`
+Base local: `http://localhost:3000`
+Base publicada: `https://api-nodes-bt6u.onrender.com`
 
 | Método | Rota | Descrição | Respostas |
 |---|---|---|---|
+| GET | `/` | Mensagem de boas-vindas | 200 |
 | GET | `/usuarios` | Lista todos os usuários | 200 |
 | GET | `/usuarios/:id` | Busca um usuário pelo id | 200, 400 (id inválido), 404 |
 | POST | `/usuarios` | Cria um usuário | 201, 400 (dados inválidos), 409 (email repetido) |
@@ -143,7 +184,7 @@ Os demais erros retornam uma mensagem simples, como `{ "message": "Usuário não
 ## Estrutura do projeto
 
 ```
-server.js                              → sobe o servidor na porta 3000
+server.js                              → sobe o servidor (PORT ou 3000)
 src/
   app.js                               → monta o Express (middlewares e rotas)
   routes/usuarios.routes.js            → define as rotas
@@ -155,8 +196,6 @@ src/
 prisma/schema.prisma                   → modelo de dados (User)
 ```
 
-Fluxo de uma requisição: **rota → validação → controller → service → Prisma → MongoDB**.
-
 ## Scripts
 
 | Comando | O que faz |
@@ -167,4 +206,4 @@ Fluxo de uma requisição: **rota → validação → controller → service →
 
 ## Autor
 
-Athilla Cruz
+Athilla Cruz — [GitHub](https://github.com/AthillaDev)
